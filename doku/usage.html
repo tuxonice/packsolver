@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PackSolver Usage Guide</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>PackSolver Usage Guide</h1>
+            <p class="tagline">How to Use PackSolver in Your Projects</p>
+        </div>
+    </header>
+
+    <nav>
+        <div class="container">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="api.html">API</a></li>
+                <li><a href="#installation" class="active">Installation</a></li>
+                <li><a href="#basic-usage">Basic Usage</a></li>
+                <li><a href="#advanced-usage">Advanced Usage</a></li>
+                <li><a href="#examples">Examples</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="container">
+        <section id="installation">
+            <h2>Installation</h2>
+            <p>
+                There are several ways to install and use PackSolver depending on your needs:
+            </p>
+
+            <h3>Global Installation</h3>
+            <p>
+                For global access to PackSolver from any directory, install it globally using Composer:
+            </p>
+            <pre><code>composer global require tuxonice/packsolver</code></pre>
+            <p>
+                Make sure your global Composer bin directory is in your PATH to access the tool directly.
+            </p>
+
+            <h3>Project-specific Installation</h3>
+            <p>
+                To use PackSolver in a specific project, add it as a development dependency:
+            </p>
+            <pre><code>composer require --dev tuxonice/packsolver</code></pre>
+            <p>
+                You can then access it via <code>vendor/bin/packsolver</code> in your project directory.
+            </p>
+
+            <h3>Requirements</h3>
+            <ul>
+                <li>PHP 8.0 or higher</li>
+                <li>Composer 2.0 or higher</li>
+            </ul>
+        </section>
+
+        <section id="basic-usage">
+            <h2>Basic Usage</h2>
+            <p>
+                PackSolver is designed to be simple to use while providing powerful analysis of your Composer dependencies.
+            </p>
+
+            <h3>Analyzing the Current Project</h3>
+            <p>
+                To analyze the current project directory, simply run:
+            </p>
+            <pre><code>packsolver</code></pre>
+            <p>
+                Or if installed as a project dependency:
+            </p>
+            <pre><code>vendor/bin/packsolver</code></pre>
+
+            <h3>Analyzing a Specific Project</h3>
+            <p>
+                To analyze a different project, specify the path to the project directory:
+            </p>
+            <pre><code>packsolver /path/to/project</code></pre>
+
+            <h3>Understanding the Output</h3>
+            <p>
+                PackSolver will display:
+            </p>
+            <ul>
+                <li><strong>Project Information</strong>: Name and basic details about the project</li>
+                <li><strong>Detected Conflicts</strong>: List of dependency conflicts found</li>
+                <li><strong>Suggested Solutions</strong>: For each conflict, multiple potential solutions with confidence ratings</li>
+            </ul>
+
+            <p>Example output:</p>
+            <pre><code>PackSolver - PHP Composer Dependency Conflict Solver
+
+Analyzing project: my-awesome-project
+
+Detected 2 conflicts:
+
+1. Conflict in package symfony/console (High Severity)
+   - Required by symfony/framework-bundle: ^5.0
+   - Required by symfony/console: ^6.0
+
+   Suggested solutions:
+   
+   a) Update symfony/framework-bundle (85% confidence)
+      - Run: composer update symfony/framework-bundle --with-dependencies
+      
+   b) Relax version constraint (70% confidence)
+      - Edit composer.json to change symfony/framework-bundle requirement to ^5.0|^6.0
+      
+   c) Consider alternative packages (45% confidence)
+      - Consider using league/climate instead of symfony/console
+
+2. Conflict in package monolog/monolog (Medium Severity)
+   ...
+</code></pre>
+        </section>
+
+        <section id="advanced-usage">
+            <h2>Advanced Usage</h2>
+            <p>
+                PackSolver offers several advanced options to customize its behavior.
+            </p>
+
+            <h3>JSON Output</h3>
+            <p>
+                To get the output in JSON format (useful for integration with other tools):
+            </p>
+            <pre><code>packsolver --json</code></pre>
+
+            <h3>Verbose Mode</h3>
+            <p>
+                For more detailed information about conflicts and solutions:
+            </p>
+            <pre><code>packsolver -v</code></pre>
+            <p>
+                Verbose mode includes additional details such as:
+            </p>
+            <ul>
+                <li>Complete dependency chains leading to conflicts</li>
+                <li>Version compatibility details</li>
+                <li>More comprehensive solution steps</li>
+                <li>Reasoning behind confidence ratings</li>
+            </ul>
+
+            <h3>Combining Options</h3>
+            <p>
+                You can combine multiple options:
+            </p>
+            <pre><code>packsolver /path/to/project --json -v</code></pre>
+        </section>
+
+        <section id="examples">
+            <h2>Example Scenarios</h2>
+            <p>
+                Here are some common scenarios and how to use PackSolver to solve them:
+            </p>
+
+            <h3>Scenario 1: Upgrading a Framework</h3>
+            <p>
+                When upgrading a major framework version, you may encounter multiple dependency conflicts.
+            </p>
+            <pre><code># Analyze the project after updating the framework requirement
+packsolver -v
+
+# Apply the recommended solutions
+# For example, if PackSolver suggests updating certain packages:
+composer update package1 package2 --with-dependencies
+
+# Re-run PackSolver to verify conflicts are resolved
+packsolver</code></pre>
+
+            <h3>Scenario 2: Adding a New Package</h3>
+            <p>
+                When adding a new package causes conflicts with existing dependencies:
+            </p>
+            <pre><code># After encountering an error with composer require
+packsolver
+
+# If PackSolver suggests relaxing version constraints:
+# Edit composer.json as suggested
+# Then run:
+composer update</code></pre>
+
+            <h3>Scenario 3: CI/CD Integration</h3>
+            <p>
+                You can integrate PackSolver into your CI/CD pipeline to detect dependency conflicts early:
+            </p>
+            <pre><code>#!/bin/bash
+# Example CI script
+
+# Install dependencies
+composer install
+
+# Run PackSolver with JSON output
+vendor/bin/packsolver --json > conflicts.json
+
+# Check if conflicts were found
+if [ "$(jq '.conflicts | length' conflicts.json)" -gt 0 ]; then
+  echo "Dependency conflicts detected!"
+  exit 1
+fi</code></pre>
+        </section>
+
+        <section id="troubleshooting">
+            <h2>Troubleshooting</h2>
+            
+            <h3>Common Issues</h3>
+            <ul>
+                <li>
+                    <strong>Missing composer.json or composer.lock</strong>
+                    <p>Ensure both files exist in the project directory. If composer.lock is missing, run <code>composer install</code> first.</p>
+                </li>
+                <li>
+                    <strong>Permission Issues</strong>
+                    <p>If installed globally, ensure the global Composer bin directory is in your PATH and you have the necessary permissions.</p>
+                </li>
+                <li>
+                    <strong>PHP Version Conflicts</strong>
+                    <p>PackSolver requires PHP 8.0+. If you're using an older version, you may need to update PHP or use a compatibility package.</p>
+                </li>
+            </ul>
+            
+            <h3>Getting Help</h3>
+            <p>
+                If you encounter issues not covered here, please:
+            </p>
+            <ul>
+                <li>Check the <a href="https://github.com/tuxonice/packsolver/issues">GitHub issues</a> to see if your problem has been reported</li>
+                <li>Submit a new issue with detailed information about your environment and the problem</li>
+                <li>Include the output of <code>packsolver -v</code> in your issue report</li>
+            </ul>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 TuxOnIce - PackSolver</p>
+        </div>
+    </footer>
+
+    <script src="scripts.js"></script>
+</body>
+</html>

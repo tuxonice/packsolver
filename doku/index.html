@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PackSolver - PHP Composer Conflict Solver</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>PackSolver</h1>
+            <p class="tagline">PHP Composer Dependency Conflict Solver</p>
+        </div>
+    </header>
+
+    <nav>
+        <div class="container">
+            <ul>
+                <li><a href="#overview" class="active">Overview</a></li>
+                <li><a href="#architecture">Architecture</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#installation">Installation</a></li>
+                <li><a href="#development">Development</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="container">
+        <section id="overview">
+            <h2>Project Overview</h2>
+            <p>
+                PackSolver is a developer tool designed to simplify the process of resolving PHP Composer dependency conflicts. 
+                When package version requirements collide and block your workflow, this tool analyzes your composer.json and 
+                composer.lock files, detects conflicting dependencies, and provides clear, actionable suggestions to help you 
+                get back to coding faster.
+            </p>
+            <p>
+                Whether you're maintaining a complex application or troubleshooting a tricky update, PackSolver makes dependency 
+                management more transparent and less frustrating.
+            </p>
+        </section>
+
+        <section id="architecture">
+            <h2>Architecture</h2>
+            <p>
+                PackSolver follows a modular architecture with clear separation of concerns. The main components are:
+            </p>
+
+            <div class="mermaid">
+                graph TD
+                    CLI[CLI Interface] --> Parser
+                    Parser --> Analyzer
+                    Analyzer --> Resolver
+                    Resolver --> CLI
+                    
+                    subgraph "Core Components"
+                        Parser[Parser<br/>Reads composer.json/lock]
+                        Analyzer[Conflict Analyzer<br/>Detects version conflicts]
+                        Resolver[Conflict Resolver<br/>Generates solutions]
+                    end
+                    
+                    Parser --> ComposerData[(Model<br/>ComposerData)]
+                    Analyzer --> Conflicts[(Model<br/>Conflicts)]
+                    Resolver --> Solutions[(Model<br/>Solutions)]
+            </div>
+
+            <h3>Key Components</h3>
+            <ul>
+                <li><strong>Parser</strong>: Extracts dependency information from composer.json and composer.lock files</li>
+                <li><strong>Analyzer</strong>: Detects conflicts between package dependencies</li>
+                <li><strong>Resolver</strong>: Generates actionable solutions for resolving conflicts</li>
+                <li><strong>CLI Interface</strong>: Command-line interface for interacting with the tool</li>
+            </ul>
+        </section>
+
+        <section id="features">
+            <h2>Features</h2>
+            <ul>
+                <li>Parse composer.json and composer.lock files to extract dependency information</li>
+                <li>Detect conflicts between package dependencies</li>
+                <li>Generate multiple solution strategies for resolving conflicts:
+                    <ul>
+                        <li>Update packages to compatible versions</li>
+                        <li>Relax version constraints</li>
+                        <li>Suggest alternative packages</li>
+                        <li>Remove conflicting dependencies</li>
+                    </ul>
+                </li>
+                <li>Provide clear, actionable steps for implementing solutions</li>
+                <li>Output results in human-readable or JSON format</li>
+            </ul>
+        </section>
+
+        <section id="installation">
+            <h2>Installation</h2>
+            <p>You can install PackSolver globally using Composer:</p>
+            <pre><code>composer global require tuxonice/packsolver</code></pre>
+            
+            <p>Or add it to your project as a development dependency:</p>
+            <pre><code>composer require --dev tuxonice/packsolver</code></pre>
+            
+            <h3>Requirements</h3>
+            <ul>
+                <li>PHP 8.0 or higher</li>
+                <li>Composer 2.0 or higher</li>
+            </ul>
+        </section>
+
+        <section id="development">
+            <h2>Development</h2>
+            <p>To contribute to PackSolver, follow these steps:</p>
+            
+            <h3>Setting Up the Development Environment</h3>
+            <pre><code>git clone https://github.com/tuxonice/packsolver.git
+cd packsolver
+composer install</code></pre>
+            
+            <h3>Running Tests</h3>
+            <pre><code>composer test</code></pre>
+            
+            <h3>Code Style</h3>
+            <p>PackSolver follows PSR-12 coding standards. You can check your code style with:</p>
+            <pre><code>composer cs</code></pre>
+            
+            <p>And automatically fix style issues with:</p>
+            <pre><code>composer cs-fix</code></pre>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 TuxOnIce - PackSolver</p>
+        </div>
+    </footer>
+
+    <script src="scripts.js"></script>
+</body>
+</html>

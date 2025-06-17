@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PackSolver API Documentation</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>PackSolver API</h1>
+            <p class="tagline">Core Components Documentation</p>
+        </div>
+    </header>
+
+    <nav>
+        <div class="container">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="#parser" class="active">Parser</a></li>
+                <li><a href="#analyzer">Analyzer</a></li>
+                <li><a href="#resolver">Resolver</a></li>
+                <li><a href="#models">Models</a></li>
+                <li><a href="#cli">CLI</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main class="container">
+        <section id="parser">
+            <h2>Parser Component</h2>
+            <p>
+                The Parser component is responsible for extracting dependency information from composer.json and 
+                composer.lock files. It creates structured model objects that can be used by other components.
+            </p>
+
+            <h3>ComposerFileParser</h3>
+            <p>Main class responsible for parsing Composer files.</p>
+            <pre><code>namespace TuxOnIce\PackSolver\Parser;
+
+class ComposerFileParser
+{
+    /**
+     * Parse composer.json and composer.lock files from a project directory
+     * 
+     * @param string $projectPath Path to the project directory
+     * @return ComposerData Object containing parsed data
+     * @throws ParserException If files cannot be parsed
+     */
+    public function parseComposerFiles(string $projectPath): ComposerData
+    {
+        // Implementation details...
+    }
+}</code></pre>
+
+            <h3>Key Methods</h3>
+            <ul>
+                <li><code>parseComposerFiles(string $projectPath): ComposerData</code> - Main entry point for parsing</li>
+                <li><code>parseComposerJson(string $jsonContent): array</code> - Parse composer.json contents</li>
+                <li><code>parseComposerLock(string $lockContent): array</code> - Parse composer.lock contents</li>
+                <li><code>extractPackages(array $jsonData, array $lockData): ComposerData</code> - Extract package information</li>
+            </ul>
+        </section>
+
+        <section id="analyzer">
+            <h2>Conflict Analyzer Component</h2>
+            <p>
+                The Analyzer component detects conflicts between package dependencies by analyzing version constraints
+                and determining if they are compatible.
+            </p>
+
+            <h3>ConflictAnalyzer</h3>
+            <p>Main class responsible for analyzing dependencies and detecting conflicts.</p>
+            <pre><code>namespace TuxOnIce\PackSolver\Analyzer;
+
+class ConflictAnalyzer
+{
+    /**
+     * Analyze composer data and detect conflicts
+     * 
+     * @param ComposerData $composerData Parsed composer data
+     * @return array Array of Conflict objects
+     */
+    public function analyzeConflicts(ComposerData $composerData): array
+    {
+        // Implementation details...
+    }
+}</code></pre>
+
+            <h3>Key Methods</h3>
+            <ul>
+                <li><code>analyzeConflicts(ComposerData $composerData): array</code> - Main entry point for conflict analysis</li>
+                <li><code>buildDependencyMap(ComposerData $composerData): array</code> - Build a map of dependencies</li>
+                <li><code>detectConflicts(array $dependencyMap): array</code> - Detect conflicts in the dependency map</li>
+                <li><code>calculateConflictSeverity(Conflict $conflict): int</code> - Calculate the severity of a conflict</li>
+            </ul>
+        </section>
+
+        <section id="resolver">
+            <h2>Conflict Resolver Component</h2>
+            <p>
+                The Resolver component generates actionable solutions for resolving detected conflicts.
+                It provides multiple strategies with confidence levels.
+            </p>
+
+            <h3>ConflictResolver</h3>
+            <p>Main class responsible for generating solutions to conflicts.</p>
+            <pre><code>namespace TuxOnIce\PackSolver\Resolver;
+
+class ConflictResolver
+{
+    /**
+     * Generate solutions for a conflict
+     * 
+     * @param Conflict $conflict The conflict to resolve
+     * @param ComposerData $composerData Parsed composer data
+     * @return array Array of Solution objects
+     */
+    public function generateSolutions(Conflict $conflict, ComposerData $composerData): array
+    {
+        // Implementation details...
+    }
+}</code></pre>
+
+            <h3>Key Methods</h3>
+            <ul>
+                <li><code>generateSolutions(Conflict $conflict, ComposerData $composerData): array</code> - Main entry point for solution generation</li>
+                <li><code>generateUpdateSolution(Conflict $conflict, ComposerData $composerData): Solution</code> - Generate a solution to update packages</li>
+                <li><code>generateRelaxConstraintSolution(Conflict $conflict, ComposerData $composerData): Solution</code> - Generate a solution to relax version constraints</li>
+                <li><code>generateAlternativePackageSolution(Conflict $conflict): Solution</code> - Generate a solution suggesting alternative packages</li>
+                <li><code>generateRemovalSolution(Conflict $conflict): Solution</code> - Generate a solution to remove conflicting dependencies</li>
+            </ul>
+        </section>
+
+        <section id="models">
+            <h2>Model Classes</h2>
+            <p>
+                PackSolver uses several model classes to represent data structures used throughout the application.
+            </p>
+
+            <h3>Class Diagram</h3>
+            <div class="mermaid">
+                classDiagram
+                    class ComposerData {
+                        -string $projectName
+                        -array $requiredPackages
+                        -array $devPackages
+                        -array $installedPackages
+                        +getProjectName()
+                        +getRequiredPackages()
+                        +getDevPackages()
+                        +getInstalledPackages()
+                    }
+                    
+                    class Package {
+                        -string $name
+                        -string $versionConstraint
+                        -string $installedVersion
+                        -string $type
+                        -string $sourceUrl
+                        -array $dependencies
+                        +getName()
+                        +getVersionConstraint()
+                        +getInstalledVersion()
+                        +getDependencies()
+                    }
+                    
+                    class Conflict {
+                        -string $packageName
+                        -string $description
+                        -array $conflictingRequirements
+                        -int $severity
+                        +getPackageName()
+                        +getDescription()
+                        +getConflictingRequirements()
+                        +getSeverity()
+                    }
+                    
+                    class Solution {
+                        -string $title
+                        -string $description
+                        -array $steps
+                        -int $confidence
+                        -string $composerCommand
+                        +getTitle()
+                        +getDescription()
+                        +getSteps()
+                        +getConfidence()
+                        +getComposerCommand()
+                    }
+                    
+                    ComposerData "1" --> "*" Package : contains
+                    Conflict --> "1" Package : references
+                    Solution --> "1" Conflict : resolves
+            </div>
+
+            <h3>Key Model Classes</h3>
+            <ul>
+                <li><code>ComposerData</code> - Contains project name and collections of packages</li>
+                <li><code>Package</code> - Represents a single package with version constraints and dependencies</li>
+                <li><code>Conflict</code> - Represents a detected dependency conflict</li>
+                <li><code>Solution</code> - Represents a suggested resolution for a conflict</li>
+            </ul>
+        </section>
+
+        <section id="cli">
+            <h2>CLI Interface</h2>
+            <p>
+                The CLI interface provides a command-line tool for interacting with PackSolver.
+            </p>
+
+            <h3>PackSolverCommand</h3>
+            <p>Main command class for the CLI interface.</p>
+            <pre><code>namespace TuxOnIce\PackSolver\Command;
+
+use Symfony\Component\Console\Command\Command;
+
+class PackSolverCommand extends Command
+{
+    /**
+     * Configure the command
+     */
+    protected function configure(): void
+    {
+        $this->setName('analyze')
+            ->setDescription('Analyze composer dependencies for conflicts')
+            ->addArgument('path', InputArgument::OPTIONAL, 'Path to the project', '.')
+            ->addOption('json', null, InputOption::VALUE_NONE, 'Output in JSON format')
+            ->addOption('verbose', 'v', InputOption::VALUE_NONE, 'Show detailed information');
+    }
+
+    /**
+     * Execute the command
+     */
+    protected function execute(InputInterface $input, OutputInterface $output): int
+    {
+        // Implementation details...
+    }
+}</code></pre>
+
+            <h3>Usage Examples</h3>
+            <pre><code># Basic usage (current directory)
+./bin/packsolver
+
+# Analyze a specific project
+./bin/packsolver /path/to/project
+
+# Output in JSON format
+./bin/packsolver --json
+
+# Show detailed information
+./bin/packsolver -v</code></pre>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 TuxOnIce - PackSolver</p>
+        </div>
+    </footer>
+
+    <script src="scripts.js"></script>
+</body>
+</html>
