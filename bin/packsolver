@@ -1,0 +1,12 @@
+#!/usr/bin/env php
+<?php
+
+require_once __DIR__ . '/../vendor/autoload.php';
+
+use TuxOnIce\PackSolver\Command\PackSolverCommand;
+use Symfony\Component\Console\Application;
+
+$application = new Application('PackSolver', '0.1.0');
+$application->add(new PackSolverCommand());
+$application->setDefaultCommand('packsolver', true);
+$application->run();
