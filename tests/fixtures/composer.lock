@@ -1,0 +1,92 @@
+{
+    "_readme": [
+        "This file locks the dependencies of your project to a known state",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
+        "This file is @generated automatically"
+    ],
+    "content-hash": "test-hash-value",
+    "packages": [
+        {
+            "name": "symfony/console",
+            "version": "6.0.19",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/console.git",
+                "reference": "test-reference"
+            },
+            "require": {
+                "php": ">=8.0.2",
+                "symfony/service-contracts": "^2.1|^3",
+                "symfony/string": "^5.4|^6.0"
+            }
+        },
+        {
+            "name": "symfony/process",
+            "version": "6.0.11",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/process.git",
+                "reference": "test-reference"
+            },
+            "require": {
+                "php": ">=8.0.2"
+            }
+        },
+        {
+            "name": "symfony/service-contracts",
+            "version": "3.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/service-contracts.git",
+                "reference": "test-reference"
+            },
+            "require": {
+                "php": ">=8.0.2"
+            }
+        },
+        {
+            "name": "symfony/string",
+            "version": "6.0.19",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/string.git",
+                "reference": "test-reference"
+            },
+            "require": {
+                "php": ">=8.0.2",
+                "symfony/polyfill-ctype": "~1.8",
+                "symfony/polyfill-intl-grapheme": "~1.0",
+                "symfony/polyfill-intl-normalizer": "~1.0",
+                "symfony/polyfill-mbstring": "~1.0"
+            }
+        }
+    ],
+    "packages-dev": [
+        {
+            "name": "phpunit/phpunit",
+            "version": "9.5.28",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/sebastianbergmann/phpunit.git",
+                "reference": "test-reference"
+            },
+            "require": {
+                "php": ">=7.3",
+                "phpunit/php-code-coverage": "^9.2.13"
+            }
+        },
+        {
+            "name": "squizlabs/php_codesniffer",
+            "version": "3.7.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/squizlabs/PHP_CodeSniffer.git",
+                "reference": "test-reference"
+            },
+            "require": {
+                "php": ">=5.4.0",
+                "ext-tokenizer": "*"
+            }
+        }
+    ]
+}

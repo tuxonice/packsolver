@@ -1,22 +1,31 @@
 FROM php:8.4-cli-alpine
 
+# Define build arguments for user/group IDs with defaults
+ARG USER_ID=1001
+ARG GROUP_ID=1001
+
 # Install dependencies
 RUN apk add --no-cache \
     git \
     unzip \
     libzip-dev \
+    shadow \
     && docker-php-ext-install \
     zip
 
 # Install Composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-# Create non-root user
-RUN addgroup -g 1000 appuser && \
-    adduser -u 1000 -G appuser -s /bin/sh -D appuser
+# Create non-root user with dynamic UID/GID
+RUN addgroup -g $GROUP_ID appuser && \
+    adduser -u $USER_ID -G appuser -s /bin/sh -D appuser
 
 # Set working directory
 WORKDIR /app
+
+# Create and set permissions for composer cache directory
+RUN mkdir -p /home/appuser/.composer/cache && \
+    chown -R appuser:appuser /home/appuser/.composer
 
 # Copy composer files first for better caching
 COPY composer.json composer.lock* ./
@@ -38,6 +47,9 @@ RUN chown -R appuser:appuser /app
 
 # Switch to non-root user for security when running the container
 USER appuser
+
+# Configure git to trust the /app directory
+RUN git config --global --add safe.directory /app
 
 # Set the entrypoint
 ENTRYPOINT ["php", "bin/packsolver"]

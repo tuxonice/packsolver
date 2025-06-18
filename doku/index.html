@@ -164,7 +164,27 @@ make docker-cs-fix  # Fix code style in the container</code></pre>
                 <li><code>COMPOSER_ALLOW_SUPERUSER</code>: Allow Composer to run as root</li>
                 <li><code>APP_ENV</code>: Application environment (dev, test, prod)</li>
                 <li><code>PHP_MEMORY_LIMIT</code>: PHP memory limit</li>
+                <li><code>USER_ID</code>: User ID for the container user (to match your host user ID)</li>
+                <li><code>GROUP_ID</code>: Group ID for the container user (to match your host group ID)</li>
             </ul>
+            
+            <h4>Dynamic UID/GID Handling</h4>
+            <p>To avoid permission issues between your host machine and the Docker container, PackSolver supports dynamic UID/GID mapping. This ensures that files created inside the container have the same ownership as your host user.</p>
+            
+            <p>To use this feature:</p>
+            <ol>
+                <li>Find your user ID and group ID by running this command on your host machine:</li>
+                <pre><code>echo "User ID: $(id -u), Group ID: $(id -g)"</code></pre>
+                
+                <li>Set these values in your <code>.env</code> file:</li>
+                <pre><code>USER_ID=$(id -u)
+GROUP_ID=$(id -g)</code></pre>
+                
+                <li>Rebuild the Docker container to apply the changes:</li>
+                <pre><code>make docker-build</code></pre>
+            </ol>
+            
+            <p>If you're experiencing permission issues with files created in the container, make sure your USER_ID and GROUP_ID match your host user.</p>
         </section>
     </main>
 

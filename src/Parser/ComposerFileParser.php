@@ -16,7 +16,7 @@ class ComposerFileParser
      * @return ComposerData Object containing parsed composer data
      * @throws ParserException If parsing fails
      */
-    public function parse(string $composerJsonPath, string $composerLockPath = null): ComposerData
+    public function parse(string $composerJsonPath, ?string $composerLockPath = null): ComposerData
     {
         // Parse composer.json
         if (!file_exists($composerJsonPath)) {

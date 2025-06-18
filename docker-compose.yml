@@ -5,18 +5,35 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+      args:
+        # Dynamic UID/GID handling to match host user permissions
+        # Default to 1000 if not specified in .env file
+        # Use $(id -u) and $(id -g) in your .env file to match your host user
+        - USER_ID=${USER_ID:-1000}
+        - GROUP_ID=${GROUP_ID:-1000}
     volumes:
+      # Mount project directory for live code editing
       - .:/app
+      # Persist Composer cache between container restarts
       - composer-cache:/home/appuser/.composer/cache
     environment:
+      # Allow Composer to run as root during build process
       - COMPOSER_ALLOW_SUPERUSER=1
+      # Application environment variables
+      - APP_ENV=${APP_ENV:-dev}
+      - PHP_MEMORY_LIMIT=${PHP_MEMORY_LIMIT:-256M}
     # Override the entrypoint to keep the container running for development
     entrypoint: ["tail", "-f", "/dev/null"]
-    # Alternatively, you can run a shell for interactive development
+    # Uncomment these lines for interactive shell development
     # command: ["sh"]
     # tty: true
     # stdin_open: true
+    # Restart policy for development
+    restart: unless-stopped
+    # Container name for easier reference
+    container_name: packsolver_app
 
 volumes:
+  # Named volume for Composer cache persistence
   composer-cache:
     driver: local
