@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/app
+      - composer-cache:/home/appuser/.composer/cache
+    environment:
+      - COMPOSER_ALLOW_SUPERUSER=1
+    # Override the entrypoint to keep the container running for development
+    entrypoint: ["tail", "-f", "/dev/null"]
+    # Alternatively, you can run a shell for interactive development
+    # command: ["sh"]
+    # tty: true
+    # stdin_open: true
+
+volumes:
+  composer-cache:
+    driver: local

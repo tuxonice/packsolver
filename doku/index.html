@@ -23,6 +23,7 @@
                 <li><a href="#features">Features</a></li>
                 <li><a href="#installation">Installation</a></li>
                 <li><a href="#development">Development</a></li>
+                <li><a href="#docker">Docker</a></li>
             </ul>
         </div>
     </nav>
@@ -126,6 +127,44 @@ composer install</code></pre>
             
             <p>And automatically fix style issues with:</p>
             <pre><code>composer cs-fix</code></pre>
+            
+            <h3>Docker Environment</h3>
+            <p>PackSolver includes a Docker environment for easy development and testing. This allows you to run the application without installing PHP or Composer locally.</p>
+            
+            <h4>Requirements</h4>
+            <ul>
+                <li>Docker</li>
+                <li>Docker Compose</li>
+            </ul>
+            
+            <h4>Getting Started with Docker</h4>
+            <p>To start the Docker environment:</p>
+            <pre><code>make docker-build  # Build the Docker containers
+make docker-up     # Start the Docker containers</code></pre>
+            
+            <h4>Running Commands in Docker</h4>
+            <p>You can run commands inside the Docker container using the provided Makefile commands:</p>
+            <pre><code>make docker-shell   # Open a shell in the container
+make docker-test    # Run tests in the container
+make docker-cs      # Check code style in the container
+make docker-cs-fix  # Fix code style in the container</code></pre>
+            
+            <p>To run a specific command in the container:</p>
+            <pre><code>make docker-exec cmd="bin/packsolver --help"</code></pre>
+            
+            <h4>Stopping the Docker Environment</h4>
+            <pre><code>make docker-down   # Stop the Docker containers</code></pre>
+            
+            <h4>Environment Variables</h4>
+            <p>The Docker environment uses environment variables defined in a <code>.env</code> file. You can create this file by copying the example:</p>
+            <pre><code>cp .env.example .env</code></pre>
+            
+            <p>Available environment variables:</p>
+            <ul>
+                <li><code>COMPOSER_ALLOW_SUPERUSER</code>: Allow Composer to run as root</li>
+                <li><code>APP_ENV</code>: Application environment (dev, test, prod)</li>
+                <li><code>PHP_MEMORY_LIMIT</code>: PHP memory limit</li>
+            </ul>
         </section>
     </main>
 
